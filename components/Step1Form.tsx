@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { useRouter } from "next/navigation"; // Import Next.js router
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 
 interface Step1FormProps {
   formData: {
@@ -15,13 +15,11 @@ interface Step1FormProps {
     phoneNumber: string;
   };
   setFormData: React.Dispatch<React.SetStateAction<any>>;
-  nextStep: () => void; // Add this line
+  nextStep: () => void;
 }
 
 const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }) => {
-
   const [countries, setCountries] = useState<string[]>([]);
-  const router = useRouter(); // Initialize Next.js router
 
   // Fetch countries from an API
   useEffect(() => {
@@ -39,7 +37,7 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
     fetchCountries();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({
       ...prev,
@@ -60,13 +58,13 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
-      <h1 className="text-3xl font-bold mb-4 text-gray-800 text-center">Start Your Application</h1>
-      <p className="text-gray-600 mb-12 text-center">
+      <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">Start Your Application</h1>
+      <p className="text-gray-600 mb-18 text-center">
         Continue to the next pages to complete your application and learn about next steps.
       </p>
 
       {/* Name Fields */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-4 mb-6">
         <div className="flex-1">
           <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
             First Name<span className="text-red-500">*</span>
@@ -98,7 +96,7 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
       </div>
 
       {/* Email and Phone Number Fields */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-4 mb-8">
         <div className="flex-1">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email<span className="text-red-500">*</span>
@@ -128,39 +126,22 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
       </div>
 
       {/* Address Field */}
-      <div className="mb-4">
+      <div className="mb-8">
         <label htmlFor="address" className="block text-sm font-medium text-gray-700">
           Country
         </label>
-        <select
-          id="address"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 appearance-none pl-3"
-        >
-          <option value="">Select a country</option>
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* State Field */}
-      <div className="mb-4">
-        <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-          State
-        </label>
-        <input
-          type="text"
-          id="state"
-          name="state"
-          value={formData.state}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3"
-        />
+        <Select onValueChange={(value) => setFormData({ ...formData, address: value })}>
+          <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
+            <SelectValue placeholder="Select a country" />
+          </SelectTrigger>
+          <SelectContent>
+            {countries.map((country) => (
+              <SelectItem key={country} value={country}>
+                {country}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Program Category Field */}
@@ -168,31 +149,29 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
         <label htmlFor="programCategory" className="block text-sm font-medium text-gray-700">
           Choose Program Category
         </label>
-        <select
-          id="programCategory"
-          name="programCategory"
-          value={formData.programCategory}
-          onChange={handleChange}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 appearance-none pl-3 border border-gray-300"
-        >
-          <option value="">Select a program</option>
-          <option value="AWS Solution Architect/DevOps Engineering">
-            AWS Solution Architect/DevOps Engineering
-          </option>
-          <option value="Data Analyst">Data Analyst</option>
-          <option value="Full Stack Developer">Full Stack Developer</option>
-          <option value="React Js Developer">React Js Developer</option>
-          <option value="CyberSecurity">CyberSecurity</option>
-          <option value="Sales force engineer">Sales force engineer</option>
-        </select>
+        <Select onValueChange={(value) => setFormData({ ...formData, programCategory: value })}>
+          <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
+            <SelectValue placeholder="Select a program" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="AWS Solution Architect/DevOps Engineering">
+              AWS Solution Architect/DevOps Engineering
+            </SelectItem>
+            <SelectItem value="Data Analyst">Data Analyst</SelectItem>
+            <SelectItem value="Full Stack Developer">Full Stack Developer</SelectItem>
+            <SelectItem value="React Js Developer">React Js Developer</SelectItem>
+            <SelectItem value="CyberSecurity">CyberSecurity</SelectItem>
+            <SelectItem value="Sales force engineer">Sales force engineer</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Next Button */}
       <div className="flex justify-end">
         <button
           type="button"
-          onClick={handleNext} 
-          className="bg-green-600 text-white px-6 py-2 rounded-md shadow-sm hover:bg-white hover:text-green-600 hover:border-green-600 border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 cursor-pointer"
+          onClick={handleNext}
+          className="bg-green-600 text-white mt-8 px-6 py-2 rounded-md shadow-sm hover:bg-white hover:text-green-600 hover:border-green-600 border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 cursor-pointer"
         >
           Next
         </button>

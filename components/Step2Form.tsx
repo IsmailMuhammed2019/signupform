@@ -22,10 +22,10 @@ interface Step2FormProps {
 export default function Step2Form({ formData, setFormData, prevStep, handleSubmit }: Step2FormProps) {
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
-      <h2 className="text-3xl font-bold mb-4 text-gray-800 text-center">Step 2: Additional Information</h2>
+      <h2 className="text-3xl font-bold mb-16 text-gray-800 text-center">Step 2: Additional Information</h2>
 
       {/* Preferred Location */}
-      <div className="mb-4">
+      <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700">Preferred Location</label>
         <Select onValueChange={(value) => setFormData({ ...formData, preferredLocation: value })}>
           <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
@@ -43,7 +43,7 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
       </div>
 
       {/* Preferred Training Method */}
-      <div className="mb-4">
+      <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700">Preferred Training Method</label>
         <Select onValueChange={(value) => setFormData({ ...formData, trainingMethod: value })}>
           <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
@@ -58,7 +58,7 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
       </div>
 
       {/* Gender */}
-      <div className="mb-4">
+      <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700">Gender</label>
         <div className="flex items-center gap-4 mt-2">
           <label className="flex items-center">
@@ -87,7 +87,7 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
       </div>
 
       {/* Date of Birth */}
-      <div className="mb-4">
+      <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
         <input
           type="date"
@@ -98,7 +98,7 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
       </div>
 
       {/* Marital Status */}
-      <div className="mb-4">
+      <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700">Marital Status</label>
         <Select onValueChange={(value) => setFormData({ ...formData, maritalStatus: value })}>
           <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
@@ -119,20 +119,20 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
         placeholder="Additional Notes"
         value={formData.notes}
         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-        className="mb-4 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3"
+        className="mb-8 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3"
       />
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-8">
         <Button
           variant="outline"
           onClick={prevStep}
-          className="border border-green-500 text-green-500 hover:bg-green-500 hover:text-white cursor-pointer"
+          className="border border-green-500 mt-8 text-green-500 hover:bg-green-500 hover:text-white cursor-pointer"
         >
           Back
         </Button>
         <Button
           onClick={handleSubmit}
-          className="bg-green-500 text-white border border-green-500 hover:bg-white hover:text-green-500 cursor-pointer"
+          className="bg-green-500 mt-8 text-white border border-green-500 hover:bg-white hover:text-green-500 cursor-pointer"
         >
           Submit
         </Button>
