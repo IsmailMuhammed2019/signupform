@@ -7,4 +7,11 @@ export interface FormDataType {
     state: string;
     programCategory: string;
     phoneNumber: string;
+    notes: string;
+    course: string;
+    preferredLocation: string;
+    trainingMethod: string;
+    gender: string;
+    dateOfBirth: string;
+    maritalStatus: string;
   }

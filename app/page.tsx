@@ -36,8 +36,16 @@ export default function Home() {
     // Add your submission logic here
   };
 
+  // Wrapper function for Step1Form to only update its specific fields
+  const setStep1FormData = (data: Partial<Step1FormDataType>) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...data,
+    }));
+  };
+
   // Wrapper function for Step2Form to only update its specific fields
-  const setStep2FormData = (data: Step2FormDataType) => {
+  const setStep2FormData = (data: Partial<Step2FormDataType>) => {
     setFormData((prev) => ({
       ...prev,
       ...data,
@@ -49,7 +57,7 @@ export default function Home() {
       {currentStep === 1 && (
         <Step1Form
           formData={formData}
-          setFormData={setFormData}
+          setFormData={setStep1FormData} // Use the wrapper function here
           nextStep={nextStep}
         />
       )}
