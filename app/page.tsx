@@ -33,7 +33,6 @@ export default function Home() {
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
-    // Add your submission logic here
   };
 
   // Wrapper function for Step1Form to only update its specific fields
@@ -57,14 +56,14 @@ export default function Home() {
       {currentStep === 1 && (
         <Step1Form
           formData={formData}
-          setFormData={setStep1FormData} // Use the wrapper function here
+          setFormData={setStep1FormData} 
           nextStep={nextStep}
         />
       )}
       {currentStep === 2 && (
         <Step2Form
           formData={formData}
-          setFormData={setStep2FormData} // Use the wrapper function here
+          setFormData={setStep2FormData} 
           prevStep={prevStep}
           handleSubmit={handleSubmit}
         />

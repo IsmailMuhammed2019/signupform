@@ -16,14 +16,13 @@ interface FormDataType {
 
 interface Step1FormProps {
   formData: FormDataType;
-  setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;
+  setFormData: (data: Partial<FormDataType>) => void; // Fix the type here
   nextStep: () => void;
 }
 
 const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }) => {
   const [countries, setCountries] = useState<string[]>([]);
 
-  // Fetch countries from an API
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -41,18 +40,13 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData({ [name]: value }); // Fix the function call
   };
 
   const handlePhoneChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      phoneNumber: value,
-    }));
+    setFormData({ phoneNumber: value });
   };
+  
 
   const handleNext = () => {
     nextStep();
