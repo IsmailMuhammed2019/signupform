@@ -22,7 +22,7 @@ interface Step2FormProps {
 export default function Step2Form({ formData, setFormData, prevStep, handleSubmit }: Step2FormProps) {
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
-      <h2 className="text-3xl font-bold mb-16 text-gray-800 text-center">Step 2: Additional Information</h2>
+      <h2 className="text-3xl font-bold mb-10 text-gray-800 text-center">Step 2: Additional Information</h2>
 
       {/* Preferred Location */}
       <div className="mb-8">

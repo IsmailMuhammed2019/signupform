@@ -21,6 +21,11 @@ export default function Home() {
     phoneNumber: "",
     notes: "",
     course: "",
+    preferredLocation: "",
+    trainingMethod: "",
+    gender: "",
+    dateOfBirth: "",
+    maritalStatus: "",
   });
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
