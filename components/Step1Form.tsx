@@ -1,4 +1,3 @@
-
 /* eslint-disable */
 
 import React, { useEffect, useState } from "react";
@@ -148,19 +147,21 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
         <label htmlFor="programCategory" className="block text-sm font-medium text-gray-700">
           Choose Program Category
         </label>
-        <Select onValueChange={(value) => setFormData({ ...formData, programCategory: value })}>
+        <Select
+          onValueChange={(value) => setFormData({ programCategory: value })}
+          value={formData.programCategory}
+        >
           <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
             <SelectValue placeholder="Select a program" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="AWS Solution Architect/DevOps Engineering">
-              AWS Solution Architect/DevOps Engineering
-            </SelectItem>
-            <SelectItem value="Data Analyst">Data Analyst</SelectItem>
-            <SelectItem value="Full Stack Developer">Full Stack Developer</SelectItem>
-            <SelectItem value="React Js Developer">React Js Developer</SelectItem>
-            <SelectItem value="CyberSecurity">CyberSecurity</SelectItem>
-            <SelectItem value="Sales force engineer">Sales force engineer</SelectItem>
+            <SelectItem value="AWS">AWS</SelectItem>
+            <SelectItem value="Data Science">Data Science</SelectItem>
+            <SelectItem value="FullStack Development">FullStack Development</SelectItem>
+            <SelectItem value="Cyber Security">Cyber Security</SelectItem>
+            <SelectItem value="Salesforce">Salesforce</SelectItem>
+            <SelectItem value="SDET (QA Tester)">SDET (QA Tester)</SelectItem>
+            <SelectItem value="Not Decided Yet">Not Decided Yet</SelectItem>
           </SelectContent>
         </Select>
       </div>

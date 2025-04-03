@@ -1,16 +1,14 @@
-"use client";
+"use client"
 
 import { useState } from "react";
-import Step1Form from "../components/Step1Form";
-import Step2Form from "../components/Step2Form";
-import { FormDataType as Step1FormDataType } from "../types/types";
-import { FormDataType as Step2FormDataType } from "../components/Step2Form";
+import Step1Form from "@/components/Step1Form";
+import Step2Form from "@/components/Step2Form";
+import Step3Form from "@/components/Step3Form";
+import SubmitPage from "@/components/SubmitPage";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
-
-  // Combine form data for Step 1 and Step 2
-  const [formData, setFormData] = useState<Step1FormDataType & Step2FormDataType>({
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     name: "",
@@ -20,35 +18,21 @@ export default function Home() {
     programCategory: "",
     phoneNumber: "",
     notes: "",
-    course: "",
+    course: [] as string[], // Updated to string[] type
     preferredLocation: "",
     trainingMethod: "",
     gender: "",
     dateOfBirth: "",
     maritalStatus: "",
   });
+  const [startDate] = useState(new Date());
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
-  };
-
-  // Wrapper function for Step1Form to only update its specific fields
-  const setStep1FormData = (data: Partial<Step1FormDataType>) => {
-    setFormData((prev) => ({
-      ...prev,
-      ...data,
-    }));
-  };
-
-  // Wrapper function for Step2Form to only update its specific fields
-  const setStep2FormData = (data: Partial<Step2FormDataType>) => {
-    setFormData((prev) => ({
-      ...prev,
-      ...data,
-    }));
+    alert("Form submitted successfully!");
   };
 
   return (
@@ -56,18 +40,27 @@ export default function Home() {
       {currentStep === 1 && (
         <Step1Form
           formData={formData}
-          setFormData={setStep1FormData} 
+          setFormData={(data) => setFormData((prev) => ({ ...prev, ...data }))}
           nextStep={nextStep}
         />
       )}
       {currentStep === 2 && (
         <Step2Form
           formData={formData}
-          setFormData={setStep2FormData} 
+          setFormData={(data) => setFormData((prev) => ({ ...prev, ...data }))}
+          prevStep={prevStep}
+          nextStep={nextStep}
+        />
+      )}
+      {currentStep === 3 && (
+        <Step3Form
+          formData={formData}
+          setFormData={(data) => setFormData((prev) => ({ ...prev, ...data }))}
           prevStep={prevStep}
           handleSubmit={handleSubmit}
         />
       )}
+      {currentStep === 4 && <SubmitPage startDate={startDate} />}
     </div>
   );
 }

@@ -4,25 +4,97 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
 export interface FormDataType {
   notes: string;
-  course: string;
+  course: string[];
   preferredLocation: string;
   trainingMethod: string;
   gender: string;
   dateOfBirth: string;
   maritalStatus: string;
+  programCategory: string;
 }
 
 interface Step2FormProps {
   formData: FormDataType;
   setFormData: (data: FormDataType) => void;
   prevStep: () => void;
-  handleSubmit: () => void;
+  nextStep: () => void;
 }
 
-export default function Step2Form({ formData, setFormData, prevStep, handleSubmit }: Step2FormProps) {
+export default function Step2Form({ formData, setFormData, prevStep, nextStep }: Step2FormProps) {
+  const programSubOptions: { [key: string]: string[] } = {
+    AWS: [
+      "AWS Cloud Engineering/Solutions Architect",
+      "DevOps Engineering",
+      "I’ll decide later",
+    ],
+    "Data Science": [
+      "Data Analysis/Data Visualization",
+      "Machine Learning/Deep Learning",
+      "Natural Language Processing",
+      "Model Deployment and Cloud for ML",
+      "I’ll decide later",
+    ],
+    "FullStack Development": [
+      "FrontEnd Development",
+      "BackEnd Development",
+      "I’ll decide later",
+    ],
+    "Cyber Security": [
+      "CompTIA Security Plus",
+      "SOC Experience",
+      "I’ll decide later",
+    ],
+    Salesforce: [
+      "Salesforce Developer",
+      "Upskill - Salesforce Advanced Flow",
+      "Upskill - Salesforce Internship",
+      "Upskill - Salesforce CPQ",
+      "I’ll decide later",
+    ],
+    "SDET (QA Tester)": [
+      "Mobile Testing (Appium)",
+      "AWS Cloud for Testers",
+      "I’ll decide later",
+    ],
+    "Not Decided Yet": [],
+  };
+
+  const selectedProgram = formData.programCategory;
+  const subOptions = programSubOptions[selectedProgram] || [];
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
       <h2 className="text-3xl font-bold mb-10 text-gray-800 text-center">Step 2: Additional Information</h2>
+
+      {/* Sub-Options */}
+      {subOptions.length > 0 && (
+        <div className="mb-8">
+          <label className="block text-sm font-medium text-gray-700 bold">
+            Which program(s) are you interested in? *
+          </label>
+          <div className="mt-2 space-y-2">
+            {subOptions.map((option) => (
+              <label key={option} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={option}
+                  checked={formData.course?.includes(option)}
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+                    const updatedCourses = isChecked
+                      ? [...(formData.course || []), option]
+                      : formData.course?.filter((item) => item !== option);
+                    setFormData({ ...formData, course: updatedCourses });
+                  }}
+                  className="mr-2"
+                  required
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Preferred Location */}
       <div className="mb-8">
@@ -88,40 +160,27 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
 
       {/* Date of Birth */}
       <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
-        <input
-          type="date"
+        <label className="block text-sm font-medium text-gray-700">Year of Birth</label>
+        <select
           value={formData.dateOfBirth}
           onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 pt-1"
-        />
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none"
+        >
+          <option value="" disabled>
+            Select Year
+          </option>
+          {Array.from({ length: 100 }, (_, i) => {
+            const year = new Date().getFullYear() - i;
+            return (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            );
+          })}
+        </select>
       </div>
 
-      {/* Marital Status */}
-      <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700">Marital Status</label>
-        <Select onValueChange={(value) => setFormData({ ...formData, maritalStatus: value })}>
-          <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
-            <SelectValue placeholder="Select Marital Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Single">Single</SelectItem>
-            <SelectItem value="Married">Married</SelectItem>
-            <SelectItem value="Divorced">Divorced</SelectItem>
-            <SelectItem value="Widowed">Widowed</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Notes */}
-      <Input
-        type="text"
-        placeholder="Additional Notes"
-        value={formData.notes}
-        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-        className="mb-8 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3"
-      />
-
+      {/* Navigation Buttons */}
       <div className="flex justify-between mt-8">
         <Button
           variant="outline"
@@ -131,10 +190,10 @@ export default function Step2Form({ formData, setFormData, prevStep, handleSubmi
           Back
         </Button>
         <Button
-          onClick={handleSubmit}
+          onClick={nextStep}
           className="bg-green-500 mt-8 text-white border border-green-500 hover:bg-white hover:text-green-500 cursor-pointer"
         >
-          Submit
+          Next
         </Button>
       </div>
     </div>
