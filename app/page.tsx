@@ -32,7 +32,7 @@ export default function Home() {
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
-    alert("Form submitted successfully!");
+    setCurrentStep(4); // Navigate to SubmitPage
   };
 
   return (

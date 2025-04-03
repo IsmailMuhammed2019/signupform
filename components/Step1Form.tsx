@@ -18,12 +18,14 @@ interface FormDataType {
 
 interface Step1FormProps {
   formData: FormDataType;
-  setFormData: (data: Partial<FormDataType>) => void; // Fix the type here
+  setFormData: (data: Partial<FormDataType>) => void;
   nextStep: () => void;
 }
 
 const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }) => {
   const [countries, setCountries] = useState<string[]>([]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -40,17 +42,52 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
     fetchCountries();
   }, []);
 
+  // Check form validity whenever formData changes
+  useEffect(() => {
+    const isValid =
+      formData.firstName &&
+      formData.lastName &&
+      formData.email &&
+      /\S+@\S+\.\S+/.test(formData.email) &&
+      formData.phoneNumber &&
+      formData.address &&
+      formData.programCategory;
+    setIsFormValid(!!isValid);
+  }, [formData]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value }); // Fix the function call
+    setFormData({ [name]: value });
+    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear error on change
   };
 
   const handlePhoneChange = (value: string) => {
     setFormData({ phoneNumber: value });
+    setErrors((prev) => ({ ...prev, phoneNumber: "" })); // Clear error on change
   };
-  
 
   const handleNext = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    // Validation checks
+    if (!formData.firstName) newErrors.firstName = "First Name is required.";
+    if (!formData.lastName) newErrors.lastName = "Last Name is required.";
+    if (!formData.email) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Invalid email format.";
+    }
+    if (!formData.phoneNumber) newErrors.phoneNumber = "Phone Number is required.";
+    if (!formData.address) newErrors.address = "Country is required.";
+    if (!formData.programCategory) newErrors.programCategory = "Program Category is required.";
+
+    // If there are errors, set them and prevent navigation
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Proceed to the next step if no errors
     nextStep();
   };
 
@@ -73,9 +110,12 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             name="firstName"
             value={formData.firstName || ""}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3"
+            className={`mt-1 block w-full border ${
+              errors.firstName ? "border-red-500" : "border-gray-300"
+            } rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3`}
             required
           />
+          {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
         </div>
         <div className="flex-1">
           <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
@@ -87,9 +127,12 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             name="lastName"
             value={formData.lastName || ""}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3"
+            className={`mt-1 block w-full border ${
+              errors.lastName ? "border-red-500" : "border-gray-300"
+            } rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3`}
             required
           />
+          {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
         </div>
       </div>
 
@@ -105,9 +148,12 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3"
+            className={`mt-1 block w-full border ${
+              errors.email ? "border-red-500" : "border-gray-300"
+            } rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3`}
             required
           />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
         <div className="flex-1">
           <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
@@ -117,19 +163,32 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             country={"us"}
             value={formData.phoneNumber}
             onChange={handlePhoneChange}
-            inputClass="w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3"
+            inputClass={`w-full border ${
+              errors.phoneNumber ? "border-red-500" : "border-gray-300"
+            } rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm h-8 pl-3`}
             containerClass="mt-1 w-full focus-within:ring-green-500 focus-within:border-green-500"
           />
+          {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
         </div>
       </div>
 
       {/* Address Field */}
       <div className="mb-4">
         <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-          Country
+          Country<span className="text-red-500">*</span>
         </label>
-        <Select onValueChange={(value) => setFormData({ ...formData, address: value })}>
-          <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
+        <Select
+          onValueChange={(value) => {
+            setFormData({ address: value });
+            setErrors((prev) => ({ ...prev, address: "" })); // Clear error on change
+          }}
+          value={formData.address}
+        >
+          <SelectTrigger
+            className={`mt-1 block w-full border ${
+              errors.address ? "border-red-500" : "border-gray-300"
+            } rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none`}
+          >
             <SelectValue placeholder="Select a country" />
           </SelectTrigger>
           <SelectContent>
@@ -140,18 +199,26 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             ))}
           </SelectContent>
         </Select>
+        {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
       </div>
 
       {/* Program Category Field */}
       <div className="mb-6">
         <label htmlFor="programCategory" className="block text-sm font-medium text-gray-700">
-          Choose Program Category
+          Choose Program Category<span className="text-red-500">*</span>
         </label>
         <Select
-          onValueChange={(value) => setFormData({ programCategory: value })}
+          onValueChange={(value) => {
+            setFormData({ programCategory: value });
+            setErrors((prev) => ({ ...prev, programCategory: "" })); // Clear error on change
+          }}
           value={formData.programCategory}
         >
-          <SelectTrigger className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none">
+          <SelectTrigger
+            className={`mt-1 block w-full border ${
+              errors.programCategory ? "border-red-500" : "border-gray-300"
+            } rounded-md shadow-sm focus:ring-green-500 hover:ring-green-500 sm:text-sm h-8 pl-3 appearance-none`}
+          >
             <SelectValue placeholder="Select a program" />
           </SelectTrigger>
           <SelectContent>
@@ -164,6 +231,9 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             <SelectItem value="Not Decided Yet">Not Decided Yet</SelectItem>
           </SelectContent>
         </Select>
+        {errors.programCategory && (
+          <p className="text-red-500 text-sm mt-1">{errors.programCategory}</p>
+        )}
       </div>
 
       {/* Next Button */}
@@ -171,7 +241,12 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
         <button
           type="button"
           onClick={handleNext}
-          className="bg-green-600 text-white px-6 py-2 rounded-md shadow-sm hover:bg-white hover:text-green-600 hover:border-green-600 border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 cursor-pointer"
+          className={`px-6 py-2 rounded-md shadow-sm border focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 cursor-pointer ${
+            isFormValid
+              ? "bg-green-600 text-white hover:bg-white hover:text-green-600 hover:border-green-600 border-green-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+          disabled={!isFormValid}
         >
           Next
         </button>
