@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar"; // Import ShadCN Calendar
 
 export default function SubmitPage({ startDate }: { startDate: Date }) {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(startDate);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(startDate); // Use undefined instead of null
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto mt-20">
@@ -12,7 +12,7 @@ export default function SubmitPage({ startDate }: { startDate: Date }) {
         <strong>25 minutes</strong>
       </p>
       <p className="text-left text-gray-700 mb-8">
-        Hello icbm&apos;s student candidate,
+        Hello icbm's student candidate,
         <br />
         We are informing you that we would like to have a short interview with you to confirm your
         registration. Please choose a preferred time on the calendar to join a Zoom session with
@@ -27,7 +27,7 @@ export default function SubmitPage({ startDate }: { startDate: Date }) {
       <div className="flex justify-center mb-8 w-full">
         <Calendar
           mode="single"
-          selected={selectedDate}
+          selected={selectedDate} // Pass selectedDate as Date or undefined
           onSelect={(date) => setSelectedDate(date)} // Handle date selection
           className="border rounded-md cursor-pointer" // Add cursor-pointer styling
         />
