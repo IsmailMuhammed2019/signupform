@@ -86,7 +86,7 @@ export default function Step3Form({ formData, setFormData, prevStep, handleSubmi
       {/* Additional Notes */}
       <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700">
-          The reason why I'm willing to attend this program: <span className="text-red-500">*</span>
+          The reason why I&apos;m willing to attend this program: <span className="text-red-500">*</span>
         </label>
         <textarea
           value={formData.notes}
