@@ -12,7 +12,7 @@ export default function SubmitPage({ startDate }: { startDate: Date }) {
         <strong>25 minutes</strong>
       </p>
       <p className="text-left text-gray-700 mb-8">
-        Hello icbm's student candidate,
+        Hello icbm&apos;s student candidate,
         <br />
         We are informing you that we would like to have a short interview with you to confirm your
         registration. Please choose a preferred time on the calendar to join a Zoom session with
