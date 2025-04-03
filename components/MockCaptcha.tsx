@@ -20,7 +20,7 @@ export default function MockCaptcha({ onVerify }: MockCaptchaProps) {
           onClick={handleVerify}
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
         >
-          I'm not a robot
+          I&apos;m not a robot
         </button>
       ) : (
         <p className="text-green-600 font-bold">CAPTCHA Verified</p>
