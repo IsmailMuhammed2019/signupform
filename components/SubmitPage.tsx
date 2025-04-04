@@ -2,8 +2,40 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar"; // Import ShadCN Calendar
 
-export default function SubmitPage({ startDate }: { startDate: Date }) {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(startDate); // Use undefined instead of null
+export default function SubmitPage({
+  startDate,
+  formData,
+}: {
+  startDate: Date;
+  formData: any;
+}) {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(startDate);
+
+  const handleSubmitToZapier = async () => {
+    const payload = {
+      ...formData,
+      selectedDate: selectedDate?.toISOString(),
+    };
+
+    try {
+      const response = await fetch("https://hooks.zapier.com/hooks/catch/22344880/2ccv5po/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert("Form submitted successfully!");
+      } else {
+        alert("Failed to submit the form.");
+      }
+    } catch (error) {
+      console.error("Error submitting form to Zapier:", error);
+      alert("An error occurred while submitting the form.");
+    }
+  };
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto mt-20">
@@ -27,14 +59,14 @@ export default function SubmitPage({ startDate }: { startDate: Date }) {
       <div className="flex justify-center mb-8 w-full">
         <Calendar
           mode="single"
-          selected={selectedDate} // Pass selectedDate as Date or undefined
-          onSelect={(date) => setSelectedDate(date)} // Handle date selection
-          className="border rounded-md cursor-pointer" // Add cursor-pointer styling
+          selected={selectedDate}
+          onSelect={(date) => setSelectedDate(date)}
+          className="border rounded-md cursor-pointer"
         />
       </div>
       <div className="flex justify-end">
         <Button
-          onClick={() => alert(`Start date selected: ${selectedDate?.toDateString()}`)}
+          onClick={handleSubmitToZapier}
           className="bg-green-500 text-white px-6 py-2 rounded-md"
         >
           Confirm Start Date

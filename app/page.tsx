@@ -60,7 +60,7 @@ export default function Home() {
           handleSubmit={handleSubmit}
         />
       )}
-      {currentStep === 4 && <SubmitPage startDate={startDate} />}
+      {currentStep === 4 && <SubmitPage startDate={startDate} formData={formData} />}
     </div>
   );
 }
