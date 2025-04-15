@@ -18,16 +18,16 @@ export default function SubmitPage({
       ...formData,
       selectedDate: selectedDate?.toISOString(),
     };
-
+  
     try {
-      const response = await fetch("https://hooks.zapier.com/hooks/catch/22344880/2ccv5po/", {
+      const response = await fetch("http://localhost:5000/submit-to-zapier", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (response.ok) {
         alert("Form submitted successfully!");
       } else {
