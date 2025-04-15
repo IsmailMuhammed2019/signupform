@@ -137,7 +137,7 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
       </div>
 
       {/* Email and Phone Number Fields */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
         <div className="flex-1">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email<span className="text-red-500">*</span>
