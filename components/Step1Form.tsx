@@ -160,7 +160,7 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, setFormData, nextStep }
             Phone Number<span className="text-red-500">*</span>
           </label>
           <PhoneInput
-            country={"us"}
+            country={"ng"} // Set default country to Nigeria
             value={formData.phoneNumber}
             onChange={handlePhoneChange}
             inputClass={`w-full border ${
